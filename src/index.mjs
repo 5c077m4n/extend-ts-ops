@@ -24,6 +24,22 @@ export function extendTSOps({ types: t }) {
 							)
 						)
 					);
+				} else if (
+					path.node.operator === "+" &&
+					t.isObjectExpression(path.node.left) &&
+					t.isObjectExpression(path.node.right)
+				) {
+					path.replaceWith(
+						t.expressionStatement(
+							t.callExpression(
+								t.memberExpression(
+									t.identifier("Object"),
+									t.identifier("assign")
+								),
+								[path.node.right, path.node.left]
+							)
+						)
+					);
 				}
 			},
 		},
