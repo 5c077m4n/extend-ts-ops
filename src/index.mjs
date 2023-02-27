@@ -8,38 +8,45 @@ export function extendTSOps({ types: t }) {
 		name: "extend-ts-ops",
 		visitor: {
 			BinaryExpression(path) {
+				const { operator, left, right } = path.node;
 				if (
-					path.node.operator === "+" &&
-					t.isArrayExpression(path.node.left) &&
-					t.isArrayExpression(path.node.right)
+					operator === "+" &&
+					t.isArrayExpression(left) &&
+					t.isArrayExpression(right)
 				) {
 					path.replaceWith(
 						t.expressionStatement(
 							t.callExpression(
 								t.memberExpression(
-									path.node.left,
+									left,
 									t.identifier("concat")
 								),
-								[path.node.right]
+								[right]
 							)
 						)
 					);
-				} else if (
-					path.node.operator === "+" &&
-					t.isObjectExpression(path.node.left) &&
-					t.isObjectExpression(path.node.right)
-				) {
-					path.replaceWith(
-						t.expressionStatement(
-							t.callExpression(
-								t.memberExpression(
-									t.identifier("Object"),
-									t.identifier("assign")
-								),
-								[path.node.right, path.node.left]
+				}
+			},
+			ExpressionStatement(path) {
+				if (t.isAssignmentExpression(path.node.expression)) {
+					const { operator, left, right } = path.node.expression;
+					if (
+						operator === "+=" &&
+						t.isIdentifier(left) &&
+						t.isArrayExpression(right)
+					) {
+						path.replaceWith(
+							t.expressionStatement(
+								t.callExpression(
+									t.memberExpression(
+										left,
+										t.identifier("push")
+									),
+									[t.spreadElement(right)]
+								)
 							)
-						)
-					);
+						);
+					}
 				}
 			},
 		},
