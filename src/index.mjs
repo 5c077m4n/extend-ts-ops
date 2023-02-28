@@ -35,17 +35,20 @@ export function extendTSOps({ types: t }) {
 						t.isIdentifier(left) &&
 						t.isArrayExpression(right)
 					) {
-						path.replaceWith(
-							t.expressionStatement(
-								t.callExpression(
-									t.memberExpression(
-										left,
-										t.identifier("push")
-									),
-									[t.spreadElement(right)]
+						const leftBind = path.scope.getBinding(left.name);
+						if (t.isArrayExpression(leftBind.path.node.init)) {
+							path.replaceWith(
+								t.expressionStatement(
+									t.callExpression(
+										t.memberExpression(
+											left,
+											t.identifier("push")
+										),
+										[t.spreadElement(right)]
+									)
 								)
-							)
-						);
+							);
+						}
 					}
 				}
 			},

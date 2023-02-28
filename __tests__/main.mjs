@@ -25,6 +25,11 @@ describe("Extens TS Ops Plugin", () => {
 		expect(code).toEqual(`const a = [];
 a.push(...[]);`);
 	});
+	test("Identifier (not an array) += empty array literal", () => {
+		const { code } = parse("const a = {}; a += [];");
+		expect(code).toEqual(`const a = {};
+a += [];`);
+	});
 	test("Identifier += array literal", () => {
 		const { code } = parse("const a = [0]; a += [1, 2, 3, 4];");
 		expect(code).toEqual(`const a = [0];
