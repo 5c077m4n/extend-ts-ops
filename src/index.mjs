@@ -28,8 +28,9 @@ export function extendTSOps({ types: t }) {
 				}
 			},
 			ExpressionStatement(path) {
-				if (t.isAssignmentExpression(path.node.expression)) {
-					const { operator, left, right } = path.node.expression;
+				const { expression } = path.node;
+				if (t.isAssignmentExpression(expression)) {
+					const { operator, left, right } = expression;
 					if (
 						operator === "+=" &&
 						t.isIdentifier(left) &&
@@ -37,6 +38,29 @@ export function extendTSOps({ types: t }) {
 					) {
 						const leftBind = path.scope.getBinding(left.name);
 						if (t.isArrayExpression(leftBind.path.node.init)) {
+							path.replaceWith(
+								t.expressionStatement(
+									t.callExpression(
+										t.memberExpression(
+											left,
+											t.identifier("push")
+										),
+										[t.spreadElement(right)]
+									)
+								)
+							);
+						}
+					} else if (
+						operator === "+=" &&
+						t.isIdentifier(left) &&
+						t.isIdentifier(right)
+					) {
+						const leftBind = path.scope.getBinding(left.name);
+						const rightBind = path.scope.getBinding(right.name);
+						if (
+							t.isArrayExpression(leftBind.path.node.init) &&
+							t.isArrayExpression(rightBind.path.node.init)
+						) {
 							path.replaceWith(
 								t.expressionStatement(
 									t.callExpression(
