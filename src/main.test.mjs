@@ -1,3 +1,4 @@
+import { describe, test, expect } from "vitest";
 import { transform } from "@babel/core";
 
 import { extendTSOps } from "../src/index.mjs";
