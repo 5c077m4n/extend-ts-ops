@@ -1,0 +1,5 @@
+{
+	"$schema": "https://raw.githubusercontent.com/SchemaStore/schemastore/master/src/schemas/json/babelrc.json",
+	"presets": ["@babel/preset-env", "@babel/preset-typescript"],
+	"plugins": [["ts-ops-upgrade", { "debug": true }]]
+}
