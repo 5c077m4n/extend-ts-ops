@@ -1,6 +1,6 @@
 {
 	"$schema": "https://raw.githubusercontent.com/SchemaStore/schemastore/master/src/schemas/json/package.json",
-	"name": "ts-ops-upgrade",
+	"name": "babel-plugin-ts-ops-upgrade",
 	"version": "0.0.0",
 	"description": "",
 	"main": "dist/index.js",
@@ -30,5 +30,11 @@
 		"@babel/parser": "7.21.2",
 		"@babel/traverse": "7.21.2",
 		"@babel/types": "7.21.2"
+	},
+	"files": [
+		"dist/"
+	],
+	"exports": {
+		".": "./dist/index.js"
 	}
 }
