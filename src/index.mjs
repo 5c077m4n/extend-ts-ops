@@ -37,7 +37,7 @@ export function extendTSOps({ types: t }) {
 						t.isArrayExpression(right)
 					) {
 						const leftBind = path.scope.getBinding(left.name);
-						if (t.isArrayExpression(leftBind.path.node.init)) {
+						if (t.isArrayExpression(leftBind?.path.node.init)) {
 							path.replaceWith(
 								t.expressionStatement(
 									t.callExpression(
@@ -58,8 +58,8 @@ export function extendTSOps({ types: t }) {
 						const leftBind = path.scope.getBinding(left.name);
 						const rightBind = path.scope.getBinding(right.name);
 						if (
-							t.isArrayExpression(leftBind.path.node.init) &&
-							t.isArrayExpression(rightBind.path.node.init)
+							t.isArrayExpression(leftBind?.path.node.init) &&
+							t.isArrayExpression(rightBind?.path.node.init)
 						) {
 							path.replaceWith(
 								t.expressionStatement(
