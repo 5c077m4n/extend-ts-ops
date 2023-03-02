@@ -1,15 +1,9 @@
 import { describe, test, expect } from "vitest";
 import { transform } from "@babel/core";
 
-import { extendTSOps } from "../src/index.mjs";
+import { extendTSOps } from "../src";
 
-/**
- * @function
- * @param source {string}
- * @param expected {string}
- * @return {void}
- */
-function compare(source, expected) {
+function compare(source: string, expected: string): void {
 	const { code: codeOut } =
 		transform(source, { plugins: [extendTSOps] }) || {};
 	expect(expected).toEqual(codeOut);

@@ -1,9 +1,11 @@
-/**
- * @function
- * @param {{ types: import('@babel/types')}}
- * @return {import('@babel/core').PluginObj}
- */
-export function extendTSOps({ types: t }) {
+import * as BabelTypes from "@babel/types";
+import type { PluginObj } from "@babel/core";
+
+export function extendTSOps({
+	types: t,
+}: {
+	types: typeof BabelTypes;
+}): PluginObj {
 	return {
 		name: "extend-ts-ops",
 		visitor: {
@@ -37,7 +39,10 @@ export function extendTSOps({ types: t }) {
 						t.isArrayExpression(right)
 					) {
 						const leftBind = path.scope.getBinding(left.name);
-						if (t.isArrayExpression(leftBind?.path.node.init)) {
+						if (
+							t.isVariableDeclarator(leftBind?.path.node) &&
+							t.isArrayExpression(leftBind?.path.node.init)
+						) {
 							path.replaceWith(
 								t.expressionStatement(
 									t.callExpression(
@@ -58,7 +63,9 @@ export function extendTSOps({ types: t }) {
 						const leftBind = path.scope.getBinding(left.name);
 						const rightBind = path.scope.getBinding(right.name);
 						if (
+							t.isVariableDeclarator(leftBind?.path.node) &&
 							t.isArrayExpression(leftBind?.path.node.init) &&
+							t.isVariableDeclarator(rightBind?.path.node) &&
 							t.isArrayExpression(rightBind?.path.node.init)
 						) {
 							path.replaceWith(

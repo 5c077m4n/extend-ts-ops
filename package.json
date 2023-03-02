@@ -3,8 +3,9 @@
 	"name": "ts-ops-upgrade",
 	"version": "0.0.0",
 	"description": "",
-	"main": "src/index.mjs",
+	"main": "dist/index.js",
 	"scripts": {
+		"build": "tsc --noEmit && node scripts/build.mjs",
 		"test": "vitest --run",
 		"test:watch": "vitest --watch",
 		"test:ui": "vitest --ui"
@@ -14,9 +15,11 @@
 	"license": "MIT",
 	"devDependencies": {
 		"@babel/core": "7.21.0",
+		"@types/babel__core": "7.20.0",
 		"@typescript-eslint/eslint-plugin": "5.53.0",
 		"@typescript-eslint/parser": "5.53.0",
 		"@vitest/ui": "0.29.1",
+		"esbuild": "0.17.10",
 		"eslint": "8.35.0",
 		"prettier": "2.8.4",
 		"typescript": "4.9.5",
